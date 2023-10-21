@@ -23,11 +23,13 @@ fetchBreeds()
     });
     
 elements.select.addEventListener('change', selectCat);
+    
 
 function selectCat(event) {
     event.preventDefault();
 
     let breedId = event.target.value;
+    
 
     fetchCatByBreed(breedId)
         
@@ -44,9 +46,12 @@ function selectCat(event) {
 
     fetchBreeds()
         .then(data => {
-            const infoDescription = data[0].description;
-            const infoTemperament = data[0].temperament;
-            const infoName = data[0].name
+            const selectedBreed = data.find(breed => breed.id === breedId);
+            
+           
+            const infoDescription = selectedBreed.description;
+            const infoTemperament = selectedBreed.temperament;
+            const infoName = selectedBreed.name;
             
             const infoAboutCat = `<div class="cat-container">
                          <h1>${infoName}</h1>
