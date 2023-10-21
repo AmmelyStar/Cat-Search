@@ -1,11 +1,7 @@
 // import axios from "axios";
+// axios.defaults.headers.common["x-api-key"] = "твій ключ";
 
-//  axios.defaults.headers.common["x-api-key"] = API_KEY;
-
-// import { fetchBreeds, fetchCatByBreed } from './cat-api';
-
-// const BASE_URL = "https://api.thecatapi.com/v1";
-// const API_KEY = "ive_rvW2fNQsV1F5ndG4nRUTL80oB7gnm9mRENenNK0bFaae9z95D31awypoySky0fpC";
+import { fetchBreeds, fetchCatByBreed} from './cat-api';
 
 const elements = {
     select: document.querySelector('.breed-select'),
@@ -13,59 +9,50 @@ const elements = {
     loader: document.querySelector('.loader'),
     error: document.querySelector('.error')
 }
-// console.log(elements.select);
-
-// console.log(fetchBreeds);
-// console.log(fetchCatByBreed);
-
-// elements.select.addEventListener('change', selectCat);
 
 
-// function selectCat(event) {
-//     event.preventDefault();
-
-//     const breedId = event.currentTarget.value;
-
-//     fetchBreeds()
-//         .then(elements.catInfo.innerHTML = `
-//    <div class="cat-img">
-//      <img src="${url}" alt="${breeds[0].name}" width="300"/>
-//      </div>
-//      <div class="cat-container">
-//      <h1>${breeds[0].name}</h1>
-//      <p>${breeds[0].description}</p>
-//      <p><b>Temperament:</b> ${breeds[0].temperament}</p>
-//    </div>
-//     `)
-//         .catch(err => {
-//         console.log(err);
-//     })
-
-//     // fetchCatByBreed(breedId);
-
+fetchBreeds()
+    .then(data => {
+           
+        const breedMarkup = data
+            .map(({ id, name }) => {
+                return `<option value = ${id}>${name}</option>`;
+            })
+            .join('');
+        elements.select.insertAdjacentHTML('beforeend', breedMarkup)
+    });
     
-    
-// };
+elements.select.addEventListener('change', selectCat);
 
-// fetchBreeds();
+function selectCat(event) {
+    event.preventDefault();
+
+    let breedId = event.target.value;
+
+    fetchCatByBreed(breedId)
+        
+        .then(data => { 
+            const cat = data               
+             .map(({ url }) => {
+          return `<img src="${url}" alt="cat" width=500/>`;
+        })
+                .join('');
+            elements.catInfo.insertAdjacentHTML('afterbegin', cat)
+        })
     
 
 
+    fetchBreeds()
+        .then(data => {
+            const infoDescription = data[0].description;
+            const infoTemperament = data[0].temperament;
+            const infoName = data[0].name
+            
+            const infoAboutCat = `<div class="cat-container">
+                         <h1>${infoName}</h1>
+                         <p>${infoDescription}</p>
+                        <p><b>Temperament:</b> ${infoTemperament}</p>` 
+            elements.catInfo.insertAdjacentHTML('beforeend', infoAboutCat);
+     })
 
-// Під час завантаження сторінки має виконуватися HTTP - запит за колекцією порід.Для цього необхідно виконати
-// GET - запит на ресурс https://api.thecatapi.com/v1/breeds, що повертає масив об'єктів. У разі успішного запиту,
-//  необхідно наповнити select.breed - select опціями
-// так, щоб value опції містило id породи, а в інтерфейсі користувачеві відображалася назва породи.
-
-// export const fetchCountries = name => {
-//   const BASE_URL = 'https://restcountries.com/v3.1/name/';
-//   const properties = 'fields=name,capital,population,flags,languages';
-
-//   return fetch(`${BASE_URL}${name}?${properties}`).then(response => {
-//     console.log(response);
-//     if (!response.ok) {
-//       throw new Error(response.status);
-//     }
-//     return response.json();
-//   });
-// };
+}
