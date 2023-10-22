@@ -10,8 +10,11 @@ const elements = {
     error: document.querySelector('.error')
 }
 
+elements.loader.style.visibility = 'hidden';
+elements.error.style.visibility = 'hidden';
 
 fetchBreeds()
+    
     .then(data => {
            
         const breedMarkup = data
@@ -19,16 +22,20 @@ fetchBreeds()
                 return `<option value = ${id}>${name}</option>`;
             })
             .join('');
-        elements.select.insertAdjacentHTML('beforeend', breedMarkup)
+        elements.select.insertAdjacentHTML('beforeend', breedMarkup);
+        
     });
     
 elements.select.addEventListener('change', selectCat);
+
     
 
 function selectCat(event) {
     event.preventDefault();
 
     let breedId = event.target.value;
+    elements.loader.style.visibility = 'visible';
+    elements.catInfo.style.visibility = 'hidden';
     
 
     fetchCatByBreed(breedId)
@@ -40,7 +47,10 @@ function selectCat(event) {
         })
                 .join('');
             elements.catInfo.insertAdjacentHTML('afterbegin', cat)
+            
+           
         })
+    
     
 
 
@@ -58,6 +68,8 @@ function selectCat(event) {
                          <p>${infoDescription}</p>
                         <p><b>Temperament:</b> ${infoTemperament}</p>` 
             elements.catInfo.insertAdjacentHTML('beforeend', infoAboutCat);
+            elements.loader.style.visibility = 'hidden';
+             elements.catInfo.style.visibility = 'visible';
      })
 
 }
