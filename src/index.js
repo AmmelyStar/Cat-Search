@@ -28,10 +28,12 @@ fetchBreeds()
     
 elements.select.addEventListener('change', selectCat);
 
+
     
 
 function selectCat(event) {
     event.preventDefault();
+    elements.catInfo.innerHTML = '';
 
     let breedId = event.target.value;
     elements.loader.style.visibility = 'visible';
