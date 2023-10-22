@@ -9,7 +9,10 @@ export function fetchBreeds () {
                 throw new Error(resp.statusText)
             }
             return resp.json();
-    })
+        })
+    .catch(() =>
+                Notiflix.Notify.warning(
+                    `Oops! Something went wrong! Try reloading the page!`));
 };
 
 export function fetchCatByBreed(breedId) {
@@ -20,7 +23,10 @@ export function fetchCatByBreed(breedId) {
                 throw new Error(resp.statusText)
             }
             return resp.json();
-    })
+        })
+    .catch(() =>
+                Notiflix.Notify.warning(
+                    `Oops! Something went wrong! Try reloading the page!`));
     
 }
 

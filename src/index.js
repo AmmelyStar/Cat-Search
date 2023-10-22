@@ -1,5 +1,7 @@
-// import axios from "axios";
-// axios.defaults.headers.common["x-api-key"] = "твій ключ";
+
+import SlimSelect from 'slim-select'
+import 'slim-select/dist/slimselect.css';
+import Notiflix from 'notiflix';
 
 import { fetchBreeds, fetchCatByBreed} from './cat-api';
 
@@ -9,6 +11,7 @@ const elements = {
     loader: document.querySelector('.loader'),
     error: document.querySelector('.error')
 }
+
 
 elements.loader.style.visibility = 'hidden';
 elements.error.style.visibility = 'hidden';
@@ -23,8 +26,14 @@ fetchBreeds()
             })
             .join('');
         elements.select.insertAdjacentHTML('beforeend', breedMarkup);
+        new SlimSelect({
+            select: elements.select
+        })
         
-    });
+    })
+    .catch(() =>
+                Notiflix.Notify.warning(
+                    `Oops! Something went wrong! Try reloading the page!`));
     
 elements.select.addEventListener('change', selectCat);
 
@@ -52,6 +61,9 @@ function selectCat(event) {
             
            
         })
+     .catch(() =>
+                Notiflix.Notify.warning(
+                    `Oops! Something went wrong! Try reloading the page!`));
     
     
 
@@ -72,6 +84,9 @@ function selectCat(event) {
             elements.catInfo.insertAdjacentHTML('beforeend', infoAboutCat);
             elements.loader.style.visibility = 'hidden';
              elements.catInfo.style.visibility = 'visible';
-     })
+        })
+     .catch(() =>
+                Notiflix.Notify.warning(
+                    `Oops! Something went wrong! Try reloading the page!`));
 
 }
