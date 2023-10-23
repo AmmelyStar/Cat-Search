@@ -67,7 +67,6 @@ function selectCat(event) {
     
     
 
-
     fetchBreeds()
         .then(data => {
             const selectedBreed = data.find(breed => breed.id === breedId);

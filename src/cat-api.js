@@ -15,6 +15,7 @@ export function fetchBreeds () {
                     `Oops! Something went wrong! Try reloading the page!`));
 };
 
+
 export function fetchCatByBreed(breedId) {
     
     return fetch(`${BASE_URL}/images/search?breed_ids=${breedId}&key=${API_KEY}`)
